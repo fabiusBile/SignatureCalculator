@@ -7,7 +7,7 @@ namespace SignatureCalculator.Domain;
 /// <summary>
 /// Calculates the signature of the file and outputs to the selected writer.
 /// </summary>
-public class SignatureCalculator
+public class Calculator
 {
     private readonly IHashWriter _hashWriter;
     private readonly ILogger _logger;
@@ -17,7 +17,7 @@ public class SignatureCalculator
     /// </summary>
     /// <param name="hashWriter">Selected hash writer.</param>
     /// <param name="logger">Logger.</param>
-    public SignatureCalculator(IHashWriter hashWriter, ILogger logger)
+    public Calculator(IHashWriter hashWriter, ILogger logger)
     {
         _hashWriter = hashWriter;
         _logger = logger;
@@ -33,6 +33,7 @@ public class SignatureCalculator
         if (!File.Exists(filePath))
         {
             _logger.LogError($"File {filePath} doesn't exist");
+            return;
         }
 
         var buffer = new byte[blockSize];
@@ -40,18 +41,20 @@ public class SignatureCalculator
         try
         {
             using var sha256 = SHA256.Create();
-            using var stream = new FileStream(filePath, FileMode.Open);
-            var bytesRead = 0;
+            using var stream = File.OpenRead(filePath);
+            
             var counter = 0;
             while (true)
             {
                 Array.Clear(buffer, 0, buffer.Length);
-                bytesRead = stream.Read(buffer, bytesRead, blockSize);
-                if (bytesRead == 0)
+                var remaining = stream.Length - stream.Position;
+                var actualBlockSize = (int) (remaining < blockSize ? remaining : blockSize);
+                if (remaining <= 0)
                 {
-                    break;
+                    return;
                 }
-                var hash = sha256.ComputeHash(buffer);
+                stream.Read(buffer, 0, actualBlockSize);
+                var hash = sha256.ComputeHash(buffer, 0, actualBlockSize);
                 _hashWriter.WriteHash(counter++, hash);
             }
         }

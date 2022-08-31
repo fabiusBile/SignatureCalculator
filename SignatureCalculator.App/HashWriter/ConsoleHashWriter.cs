@@ -1,6 +1,8 @@
 using System.Text;
+using SignatureCalculator.App.Extensions;
+using SignatureCalculator.Domain.ResultOutput;
 
-namespace SignatureCalculator.Domain.ResultOutput;
+namespace SignatureCalculator.App.HashWriter;
 
 /// <summary>
 /// Outputs hash into the console.
@@ -14,21 +16,6 @@ public class ConsoleHashWriter : IHashWriter
     /// <param name="hash">Hash of the block.</param>
     public void WriteHash(int blockNumber, byte[] hash)
     {
-        Console.WriteLine($"{blockNumber}: {ByteArrayToString(hash)}");
-    }
-
-    /// <summary>
-    /// Converts byte array to string.
-    /// </summary>
-    /// <param name="bytes">Byte array.</param>
-    private static string ByteArrayToString(IEnumerable<byte> bytes)
-    {
-        var stringBuilder = new StringBuilder();
-        foreach (var b in bytes)
-        {
-            stringBuilder.Append(b.ToString("X"));
-        }
-
-        return stringBuilder.ToString();
+        Console.WriteLine($"{blockNumber}: {hash.ToFormattedString()}");
     }
 }

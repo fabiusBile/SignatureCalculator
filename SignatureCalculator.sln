@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureCalculator.App", "SignatureCalculator.App\SignatureCalculator.App.csproj", "{04359382-B3D7-4340-BD56-DC3E54A704E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureCalculator.Domain", "SignatureCalculator.Domain\SignatureCalculator.Domain.csproj", "{CA9B0C4D-08CE-458F-B521-D59A1D6EDA98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureCalculator.Tests", "SignatureCalculator.Tests\SignatureCalculator.Tests.csproj", "{B2D5678A-5DD5-46F6-9B17-74152B25A77B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{04359382-B3D7-4340-BD56-DC3E54A704E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04359382-B3D7-4340-BD56-DC3E54A704E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04359382-B3D7-4340-BD56-DC3E54A704E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA9B0C4D-08CE-458F-B521-D59A1D6EDA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA9B0C4D-08CE-458F-B521-D59A1D6EDA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA9B0C4D-08CE-458F-B521-D59A1D6EDA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA9B0C4D-08CE-458F-B521-D59A1D6EDA98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D5678A-5DD5-46F6-9B17-74152B25A77B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D5678A-5DD5-46F6-9B17-74152B25A77B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D5678A-5DD5-46F6-9B17-74152B25A77B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D5678A-5DD5-46F6-9B17-74152B25A77B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
