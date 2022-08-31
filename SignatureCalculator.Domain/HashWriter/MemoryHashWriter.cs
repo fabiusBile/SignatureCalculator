@@ -1,9 +1,7 @@
 using System.Collections.Concurrent;
-using System.Collections.ObjectModel;
-using SignatureCalculator.App.Extensions;
-using SignatureCalculator.Domain.ResultOutput;
+using SignatureCalculator.Domain.Extensions;
 
-namespace SignatureCalculator.Tests;
+namespace SignatureCalculator.Domain.HashWriter;
 
 /// <summary>
 /// Saves the hashes to the memory.

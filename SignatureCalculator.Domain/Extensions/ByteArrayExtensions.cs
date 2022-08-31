@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace SignatureCalculator.App.Extensions;
+namespace SignatureCalculator.Domain.Extensions;
 
 /// <summary>
 /// Extensions for <see cref="byte[]"/>

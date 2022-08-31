@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
+using SignatureCalculator.Domain.HashWriter;
 using SignatureCalculator.Domain.Logging;
-using SignatureCalculator.Domain.ResultOutput;
 
 namespace SignatureCalculator.Domain;
 
@@ -33,34 +33,40 @@ public class Calculator
         if (!File.Exists(filePath))
         {
             _logger.LogError($"File {filePath} doesn't exist");
+            
             return;
         }
 
-        var buffer = new byte[blockSize];
-
         try
         {
-            using var sha256 = SHA256.Create();
-            using var stream = File.OpenRead(filePath);
-            
-            var counter = 0;
-            while (true)
+            var customThreadPool = new CustomThreadPool();
+            using var reader = new MultiThreadBlockFileReader(filePath, blockSize, customThreadPool.ThreadsCount);
+            customThreadPool
+                .ExecuteMultithreadly(threadNumber => { ReadAndProcessBlock(reader, threadNumber); }
+                    , () => !reader.AllDataRead);
+
+            while (!customThreadPool.HasFinished)
             {
-                Array.Clear(buffer, 0, buffer.Length);
-                var remaining = stream.Length - stream.Position;
-                var actualBlockSize = (int) (remaining < blockSize ? remaining : blockSize);
-                if (remaining <= 0)
-                {
-                    return;
-                }
-                stream.Read(buffer, 0, actualBlockSize);
-                var hash = sha256.ComputeHash(buffer, 0, actualBlockSize);
-                _hashWriter.WriteHash(counter++, hash);
+                Thread.Sleep(500);
             }
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Error occured while processing file");
         }
+    }
+
+    private void ReadAndProcessBlock(MultiThreadBlockFileReader reader, int threadNumber)
+    {
+        using var sha256 = SHA256.Create();
+        var result = reader.ReadBlock(threadNumber);
+        if (result == null)
+        {
+            return;
+        }
+
+        var (blockNumber, actualBlockSize, buffer) = result.Value;
+        var hash = sha256.ComputeHash(buffer, 0, actualBlockSize);
+        _hashWriter.WriteHash(blockNumber, hash);
     }
 }

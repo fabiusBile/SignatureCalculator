@@ -1,9 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using SignatureCalculator.App.ArgumentsParsing;
-using SignatureCalculator.App.HashWriter;
 using SignatureCalculator.App.Logging;
 using SignatureCalculator.Domain;
+using SignatureCalculator.Domain.HashWriter;
 
 var logger = new ConsoleLogger();
 var arguments = ArgumentsParser.ParseArguments(args);
@@ -28,5 +28,11 @@ if (string.IsNullOrEmpty(arguments.FilePath))
     return;
 }
 
-var signatureCalculator = new Calculator(new ConsoleHashWriter(), logger);
+var hashWriter = new MemoryHashWriter();
+var signatureCalculator = new Calculator(hashWriter, logger);
+Console.WriteLine("Starting calculation...");
 signatureCalculator.CalculateAndOutputSignature(arguments.FilePath, arguments.BlockSize);
+foreach (var (k,v) in hashWriter.Output)
+{
+    Console.WriteLine($"{k}: {v}");
+}

@@ -1,4 +1,4 @@
-namespace SignatureCalculator.Domain.ResultOutput;
+namespace SignatureCalculator.Domain.HashWriter;
 
 /// <summary>
 /// Outputs the result of hash calculation.

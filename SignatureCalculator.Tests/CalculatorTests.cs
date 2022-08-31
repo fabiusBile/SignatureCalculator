@@ -1,5 +1,5 @@
-using NUnit.Framework;
 using SignatureCalculator.Domain;
+using SignatureCalculator.Domain.HashWriter;
 
 namespace SignatureCalculator.Tests;
 
